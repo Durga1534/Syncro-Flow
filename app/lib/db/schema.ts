@@ -16,7 +16,7 @@ export const users = table('users', {
 export const workspaces = table("workspaces", {
     id: t.uuid("id").primaryKey().defaultRandom(),
     name: t.varchar("name").notNull(),
-    ownerId: t.integer("owner_id").notNull().references(() => users.id),
+    ownerId: t.uuid("owner_id").notNull().references(() => users.id),
     createdAt: t.timestamp("created_at").defaultNow().notNull(),
 })
 
