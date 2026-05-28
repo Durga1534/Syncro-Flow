@@ -1,0 +1,22 @@
+import { z } from "zod"
+
+export const createTaskSchema = z.object({
+    title: z.string().min(1, "Title is too short").max(256, "Title is too long"),
+    description: z.string().max(1000, "Description is too long").optional(),
+    priority: z.enum(["low", "medium", "high"]).default("low"),
+    assigneeId: z.string().min(1, "Assignee ID is required").optional(),
+})
+
+export const updateTaskStatusSchema = z.object({
+    taskId: z.string().min(1, "Task ID is required"),
+    status: z.enum(["todo", "in_progress", "done", "blocked"]).default("todo"),
+})
+
+export const assignTaskSchema = z.object({
+    taskId: z.string().min(1, "Task ID is required"),
+    assigneeId: z.string().min(1, "Assignee ID is required").optional(),
+})
+
+export type CreateTaskSchema = z.infer<typeof createTaskSchema>
+export type UpdateTaskStatusSchema = z.infer<typeof updateTaskStatusSchema>
+export type AssignTaskSchema = z.infer<typeof assignTaskSchema>

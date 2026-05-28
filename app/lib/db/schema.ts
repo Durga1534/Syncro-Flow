@@ -1,5 +1,6 @@
 import {pgEnum, pgTable as table} from "drizzle-orm/pg-core"
 import * as t from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
 
 export const roles = pgEnum("roles", ["owner", "admin", "member"])
 export const taskStatus = pgEnum("task_status", ["todo", "in_progress", "done", "blocked"])
@@ -53,5 +54,42 @@ export const activities = table("activity_log", {
     createdAt: t.timestamp('created_at').defaultNow().notNull(),
 })
 
+
+// Relations
+
+export const workspacesRelations = relations(workspaces, ({many, one}) => ({
+    members: many(members),
+    tasks: many(tasks),
+    owner: one(users, {
+        fields: [workspaces.ownerId],
+        references: [users.id],
+    })
+}))
+
+export const membersRelations = relations(members, ({one}) => ({
+    workspace: one(workspaces, {
+        fields: [members.workspaceId],
+        references: [workspaces.id],
+    }),
+    user: one(users, {
+        fields: [members.userId],
+        references: [users.id],
+    })
+}))
+
+export const tasksRelations = relations(tasks, ({ one }) => ({
+    workspace: one(workspaces, {
+        fields: [tasks.workspaceId],
+        references: [workspaces.id],
+    }),
+    assignee: one(users, {
+        fields: [tasks.assigneeId],
+        references: [users.id],
+    }),
+    createdBy: one(users, {
+        fields: [tasks.createdBy],
+        references: [users.id],
+    }),
+}))
 
 
