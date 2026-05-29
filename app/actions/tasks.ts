@@ -110,11 +110,24 @@ export const assignTask = createAction(
         const member = await db.query.members.findFirst({
             where: and(
                 eq(members.userId, userId),
+                eq(members.workspaceId, task.workspaceId)
             )
         })
         
         if(!member) {
             throw new Error("You are not a member of this workspace")
+        }
+
+        if (assigneeId) {
+            const assignee = await db.query.members.findFirst({
+                where: and(
+                    eq(members.userId, assigneeId),
+                    eq(members.workspaceId, task.workspaceId)
+                )
+            })
+            if(!assignee) {
+                throw new Error("Assignee is not a member of this workspace")
+            }
         }
 
         const assignTask = await db.update(tasks)
