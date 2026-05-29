@@ -5,6 +5,7 @@ export const createTaskSchema = z.object({
     description: z.string().max(1000, "Description is too long").optional(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
     assigneeId: z.string().min(1, "Assignee ID is required").optional(),
+    workspaceId: z.string().min(1, "Workspace ID is required"),
 })
 
 export const updateTaskStatusSchema = z.object({

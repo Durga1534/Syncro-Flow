@@ -1,10 +1,9 @@
-import React from 'react';
-
+import DashboardPage from "./(dashboard)/layout";
 function Page() {
     return (
         <div>
             <h1 className="text-3xl text-indigo-500 text-center justify-content">
-               Real Time Collab Platform
+               <DashboardPage />
             </h1>
         </div>
     );
