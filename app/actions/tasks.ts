@@ -5,6 +5,7 @@ import { createTaskSchema, updateTaskStatusSchema, assignTaskSchema } from "@/ap
 import { db } from "@/app/lib/db"
 import { tasks, members, activities } from "@/app/lib/db/schema"
 import { eq, and } from "drizzle-orm"
+import { pusherServer } from "../lib/pusher/client"
 
 export const createTask = createAction(
     createTaskSchema,
@@ -34,6 +35,21 @@ export const createTask = createAction(
         if(!newTask[0]) {
             throw new Error("Failed to create a task")
         }
+
+        // publish to pusher -all subscribed clients receive this instantly
+         await pusherServer.trigger(
+            `workspace-${workspaceId}`,
+            "task-created",
+            {
+                taskId: newTask[0].id,
+                title,
+                description,
+                priority,
+                assigneeId,
+                workspaceId,
+                createdBy: userId,
+            }
+         )
 
         await db.insert(activities).values({
             workspaceId,
@@ -80,6 +96,17 @@ export const updateTaskStatus = createAction(
           if(!updateTaskStatus[0]) {
             throw new Error("Failed to update task status")
         }
+
+        // publish to pusher -all subscribed clients receive this instantly
+        await pusherServer.trigger(
+            `workspace-${task.workspaceId}`,
+            "task-status-updated",
+            {
+                taskId,
+                status,
+                updatedBy: userId,
+            }
+        )
         
         await db.insert(activities).values({
             workspaceId: task.workspaceId,
@@ -137,7 +164,18 @@ export const assignTask = createAction(
 
          if(!assignTask[0]) {
             throw new Error("Failed to assign task")    
-        }       
+        }
+        
+        // publish to pusher -all subscribed clients receive this instantly
+        await pusherServer.trigger(
+            `workspace-${task.workspaceId}`,
+            "task-assigned",
+            {
+                taskId,
+                assigneeId,
+                updatedBy: userId,
+            }
+        )
 
         await db.insert(activities).values({
             workspaceId: task.workspaceId,
