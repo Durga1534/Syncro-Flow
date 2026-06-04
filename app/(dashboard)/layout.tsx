@@ -1,10 +1,16 @@
-import { UserButton } from "@clerk/nextjs"
+export const metadata = {
+  title: 'Dashboard - Collab',
+  description: 'Collaborative workspace dashboard',
+}
 
-export default function DashboardPage() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-2xl font-medium mb-4">Dashboard</h1>
-      <UserButton />
+    <div className="min-h-screen bg-gray-50">
+      {children}
     </div>
   )
 }

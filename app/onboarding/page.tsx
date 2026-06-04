@@ -15,7 +15,7 @@ export default function OnboardingPage() {
   const [checking, setChecking] = useState(true)
 
   // Check if user already has workspace on mount
-  useEffect(() => {
+    useEffect(() => {
     const checkWorkspace = async () => {
       if (!isLoaded || !userId) return
       
@@ -70,7 +70,7 @@ export default function OnboardingPage() {
     }
   }
 
-  if (checking || !isLoaded) {
+  if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">

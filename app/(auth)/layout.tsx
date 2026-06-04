@@ -1,3 +1,8 @@
+export const metadata = {
+    title: "Syncro Flow",
+    description: "Collaborative workspace for teams",
+}
+
 export default function AuthLayout({
   children,
 }: {
