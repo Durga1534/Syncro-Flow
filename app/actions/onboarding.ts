@@ -75,16 +75,17 @@ export async function checkUserWorkspaces() {
             }
         }
 
-        const userWorkspaces = await db.query.workspaces.findMany({
-            where: eq(workspaces.ownerId, userId),
+        const memberships = await db.query.members.findMany({
+            where: eq(members.userId, userId),
+            with: { workspace: true },
         })
 
         return {
             success: true,
             error: null,
-            data: userWorkspaces,
+            data: memberships.map((m) => m.workspace),
         }
-    }catch(err) {
+    } catch {
         return {
             success: false,
             error: "Failed to check workspaces",

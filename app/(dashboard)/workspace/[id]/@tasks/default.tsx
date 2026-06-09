@@ -2,6 +2,6 @@
 
 import { AssignedTasksPanel } from "@/components/workspace/assigned-tasks-panel"
 
-export default function TasksSlot() {
+export default function TasksDefault() {
     return <AssignedTasksPanel />
 }

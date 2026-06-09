@@ -86,10 +86,24 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
         fields: [tasks.assigneeId],
         references: [users.id],
     }),
-    createdBy: one(users, {
+    creator: one(users, {
         fields: [tasks.createdBy],
         references: [users.id],
     }),
 }))
 
+export const activitiesRelations = relations(activities, ({ one }) => ({
+    workspace: one(workspaces, {
+        fields: [activities.workspaceId],
+        references: [workspaces.id],
+    }),
+    user: one(users, {
+        fields: [activities.userId],
+        references: [users.id],
+    }),
+}))
+
+export const usersRelations = relations(users, ({ many }) => ({
+    memberships: many(members),
+}))
 

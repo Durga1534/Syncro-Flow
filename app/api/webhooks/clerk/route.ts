@@ -32,7 +32,7 @@ export async function POST(req: Request) {
             "svix-timestamp": svix_timestamp,
             "svix-signature": svix_signature
         }) as WebhookEvent
-    }catch(_err) {
+    } catch {
         return new Response("Invalid signature", {status: 400})
     }
 

@@ -5,7 +5,7 @@ import { createTaskSchema, updateTaskStatusSchema, assignTaskSchema } from "@/ap
 import { db } from "@/app/lib/db"
 import { tasks, members, activities } from "@/app/lib/db/schema"
 import { eq, and } from "drizzle-orm"
-import { pusherServer } from "../lib/pusher/client"
+import { pusherServer } from "../lib/pusher/server"
 
 export const createTask = createAction(
     createTaskSchema,

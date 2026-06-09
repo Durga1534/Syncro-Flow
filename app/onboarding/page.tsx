@@ -25,7 +25,7 @@ export default function OnboardingPage() {
           // User already has workspace, redirect to dashboard
           const firstWorkspace = result.data[0]
           if (firstWorkspace?.id) {
-            router.push(`/dashboard/workspace/${firstWorkspace.id}`)
+            router.push(`/workspace/${firstWorkspace.id}`)
           }
         }
       } catch (err) {
@@ -58,7 +58,7 @@ export default function OnboardingPage() {
       const result = await createWorkspace({ name: workspaceName })
       
       if (result.success) {
-        router.push(`/dashboard/workspace/${result.data.id}`)
+        router.push(`/workspace/${result.data.id}`)
       } else {
         setError(result.error)
       }
@@ -70,7 +70,7 @@ export default function OnboardingPage() {
     }
   }
 
-  if (!isLoaded) {
+  if (!isLoaded || checking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
