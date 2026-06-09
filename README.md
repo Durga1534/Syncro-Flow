@@ -45,7 +45,7 @@ Syncro Flow is a production-shaped answer: PostgreSQL as the source of truth, Se
 
 ## Demo
 
-> **Live:** _Add your Vercel URL here after deployment_
+> **Live:** https://syncro-flow-ten.vercel.app
 
 **Quick test (local):**
 1. Open `http://localhost:3000` in two browser windows
