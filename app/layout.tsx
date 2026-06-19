@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Collab Dashboard",
-  description: "A real-time collab dashboard",
+  title: "Syncro Flow",
+  description: "Collaborative workspace for teams to manage tasks",
 };
 
 export default function RootLayout({

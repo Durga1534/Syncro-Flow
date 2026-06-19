@@ -50,3 +50,16 @@ export type TaskAssignedEvent = {
     assigneeId?: string | null
     updatedBy: string
 }
+
+export type TaskUpdatedEvent = {
+    taskId: string
+    title: string
+    description?: string | null
+    priority: TaskPriority
+    updatedBy: string
+}
+
+export type TaskDeletedEvent = {
+    taskId: string
+    deletedBy: string
+}

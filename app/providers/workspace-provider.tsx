@@ -17,7 +17,9 @@ import type {
     MemberWithUser,
     TaskAssignedEvent,
     TaskCreatedEvent,
+    TaskDeletedEvent,
     TaskStatusUpdatedEvent,
+    TaskUpdatedEvent,
     TaskWithRelations,
     WorkspacePageData,
 } from "@/app/lib/types"
@@ -203,10 +205,62 @@ export function WorkspaceProvider({
         [workspaceId, findUser]
     )
 
+    const onTaskUpdated = useCallback(
+        (data: TaskUpdatedEvent) => {
+            setTasks((prev) =>
+                prev.map((t) =>
+                    t.id === data.taskId
+                        ? {
+                              ...t,
+                              title: data.title,
+                              description: data.description ?? null,
+                              priority: data.priority,
+                              updatedAt: new Date(),
+                          }
+                        : t
+                )
+            )
+            setActivities((prev) => [
+                buildActivity(
+                    workspaceId,
+                    data.updatedBy,
+                    "updated_task",
+                    "task",
+                    data.taskId,
+                    { title: data.title, priority: data.priority },
+                    findUser(data.updatedBy)
+                ),
+                ...prev,
+            ])
+        },
+        [workspaceId, findUser]
+    )
+
+    const onTaskDeleted = useCallback(
+        (data: TaskDeletedEvent) => {
+            setTasks((prev) => prev.filter((t) => t.id !== data.taskId))
+            setActivities((prev) => [
+                buildActivity(
+                    workspaceId,
+                    data.deletedBy,
+                    "deleted_task",
+                    "task",
+                    data.taskId,
+                    { taskId: data.taskId },
+                    findUser(data.deletedBy)
+                ),
+                ...prev,
+            ])
+        },
+        [workspaceId, findUser]
+    )
+
     useWorkspaceRealtime(workspaceId, {
         onTaskCreated,
         onTaskStatusUpdated,
         onTaskAssigned,
+        onTaskUpdated,
+        onTaskDeleted,
         onConnected: () => setIsConnected(true),
         onDisconnected: () => setIsConnected(false),
     })
